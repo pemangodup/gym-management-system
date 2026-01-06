@@ -1,47 +1,15 @@
-// import { useEffect } from "react";
-// import { router } from "expo-router";
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
-// import { getToken } from "../src/services/storage/token";
-// Option A: decode role from token
-// import { getRoleFromToken } from "../src/utils/auth";
+import { Redirect } from "expo-router";
 
 export default function Index() {
-  //   useEffect(() => {
-  //     (async () => {
-  //       const token = await getToken();
+  const token = 123; // later: load from SecureStore
 
-  //       if (!token) {
-  //         router.replace("/welcome"); // goes to app/(auth)/welcome.tsx
-  //         return;
-  //       }
+  if (!token) {
+    return <Redirect href="/welcome" />;
+  }
 
-  //       const role = getRoleFromToken(token); // "OWNER" | "ADMIN" | "MEMBER" | null
+  // later: decide role
+  // return <Redirect href="/dashboard" />; // admin/owner
+  // return <Redirect href="/home" />;      // member
 
-  //       if (role === "OWNER" || role === "ADMIN") {
-  //         router.replace("/dashboard");
-  //       } else if (role === "MEMBER") {
-  //         router.replace("/home");
-  //       } else {
-  //         // token exists but invalid/expired
-  //         router.replace("/welcome");
-  //       }
-  //     })();
-  //   }, []);
-
-  return (
-    <View style={styles.container}>
-      <Text>I Am Here</Text>
-      <StatusBar style="auto" />
-    </View>
-  ); // you can show a loading screen here later
+  return <Redirect href="/home" />;
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
