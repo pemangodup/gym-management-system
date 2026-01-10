@@ -2,6 +2,8 @@ import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 
+import AppButton from "../../components/AppButton";
+
 export default function () {
   const router = useRouter();
 
@@ -32,20 +34,16 @@ export default function () {
         {/*Buttons*/}
 
         <View style={styles.buttonRow}>
-          <Pressable
-            style={[styles.button, styles.loginButton]}
+          <AppButton
+            title="Login"
             onPress={() => router.push("/(auth)/login")}
-          >
-            <Text style={styles.loginText}>Login</Text>
-          </Pressable>
-          <Pressable
-            style={[styles.button, styles.registerButton]}
-            onPress={() => {
-              router.push("/(auth)/register");
-            }}
-          >
-            <Text style={styles.registerText}>Register</Text>
-          </Pressable>
+            variant="login"
+          />
+          <AppButton
+            title="Register"
+            onPress={() => router.push("/(auth)/register")}
+            variant="register"
+          />
         </View>
       </View>
     </>
@@ -87,27 +85,5 @@ const styles = StyleSheet.create({
     gap: 15,
     paddingHorizontal: 24,
     marginTop: 40,
-  },
-  button: {
-    paddingVertical: 12,
-    borderRadius: 15,
-    alignItems: "center",
-  },
-  loginButton: {
-    backgroundColor: "#2E86DE",
-  },
-  registerButton: {
-    borderWidth: 1,
-    borderColor: "#2E86DE",
-  },
-  loginText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "600",
-  },
-  registerText: {
-    color: "#2E86DE",
-    fontSize: 16,
-    fontWeight: "600",
   },
 });
