@@ -37,12 +37,12 @@ export default function () {
           <AppButton
             title="Login"
             onPress={() => router.push("/(auth)/login")}
-            variant="login"
+            variant="primary"
           />
           <AppButton
             title="Register"
             onPress={() => router.push("/(auth)/register")}
-            variant="register"
+            variant="secondary"
           />
         </View>
       </View>

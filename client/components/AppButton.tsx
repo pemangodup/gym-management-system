@@ -3,19 +3,19 @@ import { Pressable, StyleSheet, Text } from "react-native";
 type AppButtonProps = {
   title: string;
   onPress: () => void;
-  variant: "login" | "register";
+  variant: "primary" | "secondary";
 };
 export default function AppButton({ title, onPress, variant }: AppButtonProps) {
   return (
     <Pressable
       style={[
         styles.button,
-        variant === "login" ? styles.loginButton : styles.registerButton,
+        variant === "primary" ? styles.loginButton : styles.registerButton,
       ]}
       onPress={onPress}
     >
       <Text
-        style={variant === "login" ? styles.loginText : styles.registerText}
+        style={variant === "primary" ? styles.loginText : styles.registerText}
       >
         {title}
       </Text>
@@ -26,7 +26,7 @@ export default function AppButton({ title, onPress, variant }: AppButtonProps) {
 const styles = StyleSheet.create({
   button: {
     paddingVertical: 12,
-    borderRadius: 15,
+    borderRadius: 10,
     alignItems: "center",
   },
   loginButton: {
