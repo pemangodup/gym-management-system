@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Text, View, StyleSheet, TextInput } from "react-native";
 import AppButton from "../../components/AppButton";
 import { router } from "expo-router";
+import AppInput from "../../components/AppInput";
 
 export default function Register() {
   const [fullName, setFullName] = useState("");
@@ -17,42 +18,39 @@ export default function Register() {
       <Text style={styles.title}>Let's Register</Text>
       <Text style={styles.subTitle}>Register to access your gym dashboard</Text>
       <View style={styles.form}>
-        <Text style={styles.label}>Full Name</Text>
-        <TextInput
+        <AppInput
+          label="Full Name"
           value={fullName}
           onChangeText={setFullName}
           placeholder="John Doe"
           autoCapitalize="words"
-          style={styles.input}
           returnKeyType="next"
         />
-        <Text style={styles.label}>Email</Text>
-        <TextInput
+        <AppInput
+          label="Email"
           value={email}
           onChangeText={setEmail}
           placeholder="John Doe"
           autoCapitalize="none"
-          style={styles.input}
           returnKeyType="next"
         />
-        <Text style={styles.label}>Password</Text>
-        <TextInput
+        <AppInput
+          label="Password"
           value={password}
           onChangeText={setPassword}
           placeholder="John Doe"
           returnKeyType="next"
           secureTextEntry
-          style={styles.input}
         />
-        <Text style={styles.label}>Confirm password</Text>
-        <TextInput
+        <AppInput
+          label="Confirm Password"
           value={confirmPassword}
           onChangeText={setConfirmPassword}
           placeholder="John Doe"
           returnKeyType="done"
           secureTextEntry
-          style={styles.input}
         />
+
         <AppButton title="CreateAccount" onPress={onSubmit} variant="primary" />
         <AppButton
           title="Already have an account? login"
@@ -82,17 +80,5 @@ const styles = StyleSheet.create({
     fontSize: 24,
     opacity: 0.5,
     marginBottom: 35,
-  },
-  label: {
-    fontSize: 13,
-    fontWeight: "500",
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: "#2E86DE",
-    borderRadius: 10,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    fontSize: 16,
   },
 });
