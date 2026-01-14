@@ -33,6 +33,7 @@ export default function Register() {
           placeholder="John Doe"
           autoCapitalize="none"
           returnKeyType="next"
+          keyboardType="email-address"
         />
         <AppInput
           label="Password"
@@ -66,14 +67,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 24,
-    justifyContent: "center",
+    justifyContent: "flex-start",
   },
   form: {
     gap: 10,
   },
   title: {
     fontSize: 24,
-    fontWeight: "700",
+    fontWeight: "500",
     marginBottom: 20,
   },
   subTitle: {

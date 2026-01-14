@@ -8,6 +8,7 @@ type AppInputProps = {
   autoCapitalize?: "none" | "sentences" | "words" | "characters";
   returnKeyType: "next" | "done";
   secureTextEntry?: boolean;
+  keyboardType?: "default" | "email-address" | "numeric";
 };
 export default function AppInput({
   label,
@@ -17,9 +18,10 @@ export default function AppInput({
   autoCapitalize,
   returnKeyType,
   secureTextEntry,
+  keyboardType,
 }: AppInputProps) {
   return (
-    <View style={styles.container}>
+    <View>
       {label && <Text style={styles.label}>{label}</Text>}
 
       <TextInput
@@ -30,15 +32,13 @@ export default function AppInput({
         style={styles.input}
         returnKeyType={returnKeyType}
         secureTextEntry={secureTextEntry}
+        keyboardType={keyboardType}
       />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    marginBottom: 12,
-  },
   label: {
     fontSize: 13,
     fontWeight: "500",
