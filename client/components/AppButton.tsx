@@ -1,4 +1,5 @@
 import { Pressable, StyleSheet, Text } from "react-native";
+import colors from "../src/shared/theme/colors";
 
 type AppButtonProps = {
   title: string;
@@ -30,7 +31,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   loginButton: {
-    backgroundColor: "#2E86DE",
+    backgroundColor: colors.primary,
   },
   loginText: {
     color: "#fff",
@@ -39,10 +40,10 @@ const styles = StyleSheet.create({
   },
   registerButton: {
     borderWidth: 1,
-    borderColor: "#2E86DE",
+    borderColor: colors.primary,
   },
   registerText: {
-    color: "#2E86DE",
+    color: colors.primary,
     fontSize: 16,
     fontWeight: "600",
   },

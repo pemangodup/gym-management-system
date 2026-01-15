@@ -1,4 +1,5 @@
 import { View, Text, TextInput, StyleSheet } from "react-native";
+import colors from "../src/shared/theme/colors";
 
 type AppInputProps = {
   label?: string;
@@ -45,7 +46,7 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderColor: "#2E86DE",
+    borderColor: colors.primary,
     borderRadius: 10,
     paddingHorizontal: 12,
     paddingVertical: 8,

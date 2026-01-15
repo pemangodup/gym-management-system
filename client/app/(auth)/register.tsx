@@ -66,7 +66,7 @@ export default function Register() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 24,
+    padding: 30,
     justifyContent: "flex-start",
   },
   form: {
