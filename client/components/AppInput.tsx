@@ -1,5 +1,5 @@
 import { View, Text, TextInput, StyleSheet } from "react-native";
-import colors from "../src/shared/theme/colors";
+import { colors } from "../src/shared/theme/colors";
 
 type AppInputProps = {
   label?: string;

@@ -1,5 +1,5 @@
 import { Pressable, StyleSheet, Text } from "react-native";
-import colors from "../src/shared/theme/colors";
+import { colors } from "../src/shared/theme/colors";
 
 type AppButtonProps = {
   title: string;

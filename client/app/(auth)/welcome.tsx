@@ -1,9 +1,8 @@
 import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import { useRouter } from "expo-router";
-import { StatusBar } from "expo-status-bar";
 
 import AppButton from "../../components/AppButton";
-import colors from "../../src/shared/theme/colors";
+import { colors } from "../../src/shared/theme/colors";
 import { images } from "../../src/shared/assets/images";
 
 export default function () {
@@ -11,7 +10,6 @@ export default function () {
 
   return (
     <>
-      <StatusBar style="light" />
       <View style={styles.container}>
         {/* Image */}
 

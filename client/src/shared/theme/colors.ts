@@ -1,4 +1,4 @@
-const colors = {
+export const colors = {
   // Brand
   primary: "#2E7D32",
 
@@ -19,5 +19,3 @@ const colors = {
   // Button
   buttonPrimary: "#2E7D32",
 };
-
-export default colors;

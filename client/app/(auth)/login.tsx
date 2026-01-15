@@ -5,7 +5,7 @@ import { Ionicons } from "@expo/vector-icons";
 import AppInput from "../../components/AppInput";
 import AppButton from "../../components/AppButton";
 import { router } from "expo-router";
-import colors from "../../src/shared/theme/colors";
+import { colors } from "../../src/shared/theme/colors";
 
 export default function Login() {
   const [email, setEmail] = useState("");
