@@ -1,0 +1,20 @@
+import { Request, Response } from "express";
+
+// @desc   Register User
+// @route  POST /gym-management-app/auth/register
+// @access Public
+
+type RegisterBody = {
+  fullName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+};
+
+export const register = (req: Request<{}, {}, RegisterBody>, res: Response) => {
+  const body = req.body;
+  res.status(201).json({
+    success: true,
+    data: body,
+  });
+};

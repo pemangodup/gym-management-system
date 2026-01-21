@@ -5,7 +5,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.get("/health", (_req, res) => res.json({ ok: true }));
+// Routes
+import authRouter from "./routes/auth";
+
+app.use("/gym-management-app/v1/auth", authRouter);
 
 const PORT = Number(process.env.PORT) || 4000;
 app.listen(PORT, () => console.log(`API running on http://localhost:${PORT}`));
