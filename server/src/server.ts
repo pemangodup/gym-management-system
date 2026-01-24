@@ -1,12 +1,18 @@
 import express from "express";
 import cors from "cors";
+import dotenv from "dotenv";
+
+// Initializing dotenv file
+dotenv.config({ path: "./config/config.env" });
 
 const app = express();
+
+// Middleware
 app.use(cors());
 app.use(express.json());
 
 // Routes
-import authRouter from "./routes/auth";
+import authRouter from "./routes/auth.js";
 
 app.use("/gym-management-app/v1/auth", authRouter);
 

@@ -13,6 +13,7 @@ type RegisterBody = {
 
 export const register = (req: Request<{}, {}, RegisterBody>, res: Response) => {
   const body = req.body;
+  console.log(body);
   res.status(201).json({
     success: true,
     data: body,

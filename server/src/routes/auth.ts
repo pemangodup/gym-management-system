@@ -1,7 +1,7 @@
 import express from "express";
 const authRouter = express.Router();
 
-import { register } from "../controllers/auth";
+import { register } from "../controllers/auth.js";
 
 authRouter.post("/register", register);
 
