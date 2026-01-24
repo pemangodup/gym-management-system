@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { prisma } from "../config/db.js";
 
 // @desc   Register User
 // @route  POST /gym-management-app/auth/register
