@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { prisma } from "../config/db.js";
+import { registerUser } from "../services/auth.service.js";
 
 // @desc   Register User
 // @route  POST /gym-management-app/auth/register
@@ -12,11 +12,15 @@ type RegisterBody = {
   confirmPassword: string;
 };
 
-export const register = (req: Request<{}, {}, RegisterBody>, res: Response) => {
+export const register = async (
+  req: Request<{}, {}, RegisterBody>,
+  res: Response,
+) => {
   const body = req.body;
-  console.log(body);
+
+  const user = await registerUser(body);
   res.status(201).json({
     success: true,
-    data: body,
+    data: user,
   });
 };
