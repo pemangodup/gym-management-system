@@ -21,7 +21,7 @@ export const register = async (
 
   const trimmedStrings = trimStrings(body);
 
-  const { fullName, email, password, confirmPassword, role } = body;
+  const { fullName, email, password, confirmPassword, role } = trimmedStrings;
 
   if (!fullName || !email || !password || !confirmPassword || !role) {
     return res.status(400).json({

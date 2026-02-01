@@ -1,4 +1,5 @@
 import { prisma } from "../config/db.js";
+import { hashPassword } from "../utils/password.js";
 
 type RegisterBody = {
   fullName: string;
@@ -11,6 +12,9 @@ type RegisterBody = {
 // Registering User
 export async function registerUser(input: RegisterBody) {
   const email = input.email.toLowerCase();
+
+  //Hashing the password
+  const hashedPassword = await hashPassword(input.password);
   try {
     // Checking if user exists
     const existingUser = await prisma.user.findUnique({
@@ -29,7 +33,7 @@ export async function registerUser(input: RegisterBody) {
       data: {
         fullName: input.fullName,
         email: email,
-        password: input.password,
+        password: hashedPassword,
       },
       select: {
         id: true,
