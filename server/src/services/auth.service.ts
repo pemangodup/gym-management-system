@@ -1,14 +1,16 @@
 import { prisma } from "../config/db.js";
 
-type RegisterInput = {
+type RegisterBody = {
   fullName: string;
   email: string;
   password: string;
+  role: "MEMBER" | "OWNER" | "ADMIN";
+  confirmPassword: string;
 };
 
 // Registering User
-export async function registerUser(input: RegisterInput) {
-  const email = input.email.trim().toLowerCase();
+export async function registerUser(input: RegisterBody) {
+  const email = input.email.toLowerCase();
   try {
     // Checking if user exists
     const existingUser = await prisma.user.findUnique({
@@ -17,7 +19,7 @@ export async function registerUser(input: RegisterInput) {
 
     if (existingUser) {
       return {
-        ok: false as const,
+        success: false as const,
         error: "Email already registered.",
       };
     }
@@ -37,12 +39,12 @@ export async function registerUser(input: RegisterInput) {
       },
     });
     return {
-      ok: true as const,
+      success: true as const,
       user,
     };
   } catch (error) {
     return {
-      ok: false as const,
+      success: false as const,
       error,
     };
   }
