@@ -9,6 +9,7 @@ app.use(express.json());
 // Routes
 import authRouter from "./routes/auth.js";
 
+// Routing with the routes path
 app.use("/gym-management-app/v1/auth", authRouter);
 
 const PORT = Number(process.env.PORT) || 4000;

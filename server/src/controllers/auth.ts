@@ -19,18 +19,24 @@ export const register = async (
 ) => {
   const body = req.body;
 
+  // Using the trimString() utility function to trim the strings
   const trimmedStrings = trimStrings(body);
 
   const { fullName, email, password, confirmPassword, role } = trimmedStrings;
 
   if (!fullName || !email || !password || !confirmPassword || !role) {
     return res.status(400).json({
-      success: false,
-      error: "Missing required field",
+      success: true,
+      data: {
+        error: "Missing required field",
+      },
     });
   }
+
+  // Passing the parameter in the registerUser()
   const user = await registerUser(trimmedStrings);
-  res.status(201).json({
+
+  res.status(200).json({
     success: true,
     data: user,
   });

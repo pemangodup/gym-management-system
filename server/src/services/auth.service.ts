@@ -1,6 +1,8 @@
 import { prisma } from "../config/db.js";
 import { hashPassword } from "../utils/password.js";
 
+import { ErrorResponse } from "../utils/errorResponse.js";
+
 type RegisterBody = {
   fullName: string;
   email: string;
@@ -22,33 +24,26 @@ export async function registerUser(input: RegisterBody) {
     });
 
     if (existingUser) {
-      return {
-        success: false as const,
-        error: "Email already registered.",
-      };
+      throw new ErrorResponse("Email already registered", 400);
+    } else {
+      // Create User
+      const user = await prisma.user.create({
+        data: {
+          fullName: input.fullName,
+          email: email,
+          password: hashedPassword,
+        },
+        select: {
+          id: true,
+          fullName: true,
+          email: true,
+          createdAt: true,
+        },
+      });
+      return user;
     }
-
-    // Create User
-    const user = await prisma.user.create({
-      data: {
-        fullName: input.fullName,
-        email: email,
-        password: hashedPassword,
-      },
-      select: {
-        id: true,
-        fullName: true,
-        email: true,
-        createdAt: true,
-      },
-    });
-    return {
-      success: true as const,
-      user,
-    };
   } catch (error) {
     return {
-      success: false as const,
       error,
     };
   }
