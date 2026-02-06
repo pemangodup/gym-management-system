@@ -1,9 +1,6 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { registerUser } from "../services/auth.service.js";
 import { trimStrings } from "../utils/trimStrings.js";
-// @desc   Register User
-// @route  POST /gym-management-app/auth/register
-// @access Public
 
 type RegisterBody = {
   fullName: string;
@@ -13,9 +10,14 @@ type RegisterBody = {
   role: "MEMBER" | "OWNER" | "ADMIN";
 };
 
+// @desc   Register User
+// @route  POST /gym-management-app/auth/register
+// @access Public
+
 export const register = async (
   req: Request<{}, {}, RegisterBody>,
   res: Response,
+  next: NextFunction,
 ) => {
   const body = req.body;
 
@@ -32,12 +34,15 @@ export const register = async (
       },
     });
   }
+  try {
+    // Passing the parameter in the registerUser()
+    const user = await registerUser(trimmedStrings);
 
-  // Passing the parameter in the registerUser()
-  const user = await registerUser(trimmedStrings);
-
-  res.status(200).json({
-    success: true,
-    data: user,
-  });
+    res.status(200).json({
+      success: true,
+      data: user,
+    });
+  } catch (error) {
+    next(error);
+  }
 };
