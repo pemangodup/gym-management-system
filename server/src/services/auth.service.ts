@@ -21,7 +21,7 @@ export async function registerUser(input: RegisterBody) {
   });
 
   if (existingUser) {
-    throw new ErrorResponse("Email already registered", 400);
+    throw new ErrorResponse("Email already registered.", 400);
   }
 
   //Hashing the password

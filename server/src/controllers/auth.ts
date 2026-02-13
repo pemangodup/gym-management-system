@@ -46,3 +46,18 @@ export const register = async (
     next(error);
   }
 };
+
+// @desc   Login User
+// @route  POST /gym-management-app/auth/login
+// @access Private
+
+export const loginUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  res.status(200).json({
+    success: true,
+    data: "user",
+  });
+};

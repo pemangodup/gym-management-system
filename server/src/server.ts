@@ -4,8 +4,15 @@ import cors from "cors";
 import { errorHandler } from "./middleware/error.js";
 
 const app = express();
-// Middleware
-app.use(cors());
+
+// Security Middleware for web app
+const corsOptions = {
+  origin: "http://localhost:3000", // Replace with your frontend's URL
+  methods: ["GET", "PUT", "DELETE"], // Restrict allowed actions
+  credentials: true, // Allow cookies/sessions if needed later
+};
+// For browser protection
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Routes
