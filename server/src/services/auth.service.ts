@@ -43,3 +43,6 @@ export async function registerUser(input: RegisterBody) {
   });
   return user;
 }
+
+// LOGIN USER
+export function loginUser(){}
