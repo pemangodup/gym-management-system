@@ -1,5 +1,5 @@
 import { prisma } from "../config/db.js";
-import { hashPassword } from "../utils/password.js";
+import { hashPassword, verifyHashPassword } from "../utils/password.js";
 
 import { ErrorResponse } from "../utils/ErrorResponse.js";
 
@@ -45,4 +45,23 @@ export async function registerUser(input: RegisterBody) {
 }
 
 // LOGIN USER
-export function loginUser(){}
+type LoginBody = {
+  role: "ADMIN" | "MEMBER" | "OWNER";
+  email: string;
+  password: string;
+};
+export async function loginUser(user: LoginBody) {
+  const email = user.email.toLowerCase();
+
+  const existingUser = await prisma.user.findUnique({ where: { email } });
+  if (!existingUser) {
+    throw new ErrorResponse("User does not exist", 401);
+  }
+  const result = await verifyHashPassword(user.password, existingUser.password);
+  if (!result) {
+    throw new ErrorResponse("Password does not match.", 401);
+  }
+
+  console.log(result);
+  return existingUser;
+}

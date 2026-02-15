@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import { registerUser } from "../services/auth.service.js";
+import { registerUser, loginUser } from "../services/auth.service.js";
 import { trimStrings } from "../utils/trimStrings.js";
+import { ErrorResponse } from "../utils/ErrorResponse.js";
 
 type RegisterBody = {
   fullName: string;
@@ -19,20 +20,15 @@ export const register = async (
   res: Response,
   next: NextFunction,
 ) => {
-  const body = req.body;
+  const data = req.body;
 
   // Using the trimString() utility function to trim the strings
-  const trimmedStrings = trimStrings(body);
+  const trimmedStrings = trimStrings(data);
 
   const { fullName, email, password, confirmPassword, role } = trimmedStrings;
 
   if (!fullName || !email || !password || !confirmPassword || !role) {
-    return res.status(400).json({
-      success: true,
-      data: {
-        error: "Missing required field",
-      },
-    });
+    return next(new ErrorResponse("Please provide both the credentials.", 400));
   }
   try {
     // Passing the parameter in the registerUser()
@@ -50,14 +46,31 @@ export const register = async (
 // @desc   Login User
 // @route  POST /gym-management-app/auth/login
 // @access Private
-
-export const loginUser = async (
-  req: Request,
+type LoginBody = {
+  role: "ADMIN" | "MEMBER" | "OWNER";
+  email: string;
+  password: string;
+};
+export const login = async (
+  req: Request<{}, {}, LoginBody>,
   res: Response,
   next: NextFunction,
 ) => {
-  res.status(200).json({
-    success: true,
-    data: "user",
-  });
+  const data = req.body;
+  const trimedData = trimStrings(data);
+
+  const { role, email, password } = req.body;
+  if (!role || !email || !password) {
+    return next(new ErrorResponse("Please provide both the credentials.", 400));
+  }
+
+  try {
+    const user = await loginUser(trimedData);
+    res.status(200).json({
+      success: true,
+      data: user,
+    });
+  } catch (error) {
+    next(error);
+  }
 };
