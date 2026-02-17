@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 
 import { errorHandler } from "./middleware/error.js";
 
@@ -14,6 +15,7 @@ const corsOptions = {
 // For browser protection
 app.use(cors(corsOptions));
 app.use(express.json());
+app.use(cookieParser());
 
 // Routes
 import authRouter from "./routes/auth.js";
