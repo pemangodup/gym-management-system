@@ -2,6 +2,12 @@ import { NextFunction, Request, Response } from "express";
 import { registerUser, loginUser } from "../services/auth.service.js";
 import { trimStrings } from "../utils/trimStrings.js";
 import { ErrorResponse } from "../utils/ErrorResponse.js";
+import {
+  createRefreshToken,
+  hashToken,
+  signAccessToken,
+} from "../utils/token.js";
+import { prisma } from "../config/db.js";
 
 type RegisterBody = {
   fullName: string;
@@ -51,6 +57,12 @@ type LoginBody = {
   email: string;
   password: string;
 };
+
+// OPTIONAL: decide client type (web/mobile)
+function getClientType(req: Request) {
+  const t = (req.header("x-client-type") || "").toLowerCase();
+  return t == "mobile" ? "mobile" : "web";
+}
 export const login = async (
   req: Request<{}, {}, LoginBody>,
   res: Response,
@@ -59,16 +71,60 @@ export const login = async (
   const data = req.body;
   const trimedData = trimStrings(data);
 
-  const { role, email, password } = req.body;
+  const { role, email, password } = trimedData;
   if (!role || !email || !password) {
     return next(new ErrorResponse("Please provide both the credentials.", 400));
   }
 
   try {
     const user = await loginUser(trimedData);
-    res.status(200).json({
+
+    // Create refresh token + store hash in DB
+    const refreshToken = createRefreshToken();
+
+    const refreshTokenHash = hashToken(refreshToken);
+
+    const session = await prisma.session.create({
+      data: {
+        userId: user.id,
+        refreshTokenHash,
+        expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30),
+      },
+    });
+
+    // Create Access Token
+    const accessToken = signAccessToken({
+      userId: user.id,
+      sessionId: session.id,
+    });
+
+    // Send refresh token (web cookie/ mobile JSON)
+    const clientType = getClientType(req);
+
+    if (clientType === "web") {
+      res.cookie("refresh_token", refreshToken, {
+        httpOnly: true,
+        secure: true, // true in production HTTPS
+        sameSite: "lax",
+        path: "/auth/refresh",
+      });
+      return res.status(200).json({
+        success: true,
+        data: {
+          user,
+          accessToken,
+        },
+      });
+    }
+
+    // mobile
+    return res.status(200).json({
       success: true,
-      data: user,
+      data: {
+        user,
+        accessToken,
+        refreshToken,
+      },
     });
   } catch (error) {
     next(error);
