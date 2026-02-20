@@ -12,7 +12,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
 
   const onPress = () => {
-    console.log("I pressed login button");
+    console.log("I got clicked.");
   };
   return (
     <View style={styles.container}>

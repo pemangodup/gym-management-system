@@ -104,9 +104,9 @@ export const login = async (
     if (clientType === "web") {
       res.cookie("refresh_token", refreshToken, {
         httpOnly: true,
-        secure: true, // true in production HTTPS
+        secure: process.env.NODE_ENV === "production", // true in production HTTPS
         sameSite: "lax",
-        path: "/auth/refresh",
+        path: "/v1/auth/refresh",
       });
       return res.status(200).json({
         success: true,
@@ -124,6 +124,81 @@ export const login = async (
         user,
         accessToken,
         refreshToken,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc   Refresh Token
+// @route  POST /gym-management-app/auth/refresh
+// @access Private
+
+type RefreshBody = { refreshToken?: string };
+
+export const refreshToken = async (
+  req: Request<{}, {}, RefreshBody>,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const tokenFromCookie = req.cookies?.refresh_token;
+    const tokenFromBody = req.body?.refreshToken;
+
+    const refreshToken = tokenFromCookie || tokenFromBody;
+    if (!refreshToken) {
+      return next(new ErrorResponse("Missing refresh token.", 401));
+    }
+    const session = await prisma.session.findFirst({
+      where: {
+        refreshTokenHash: hashToken(refreshToken),
+        revokedAt: null,
+      },
+    });
+
+    if (!session || session.expiresAt < new Date()) {
+      return next(new ErrorResponse("Invalid refresh token.", 401));
+    }
+
+    // Rotate
+    const newRefresh = createRefreshToken();
+    await prisma.session.update({
+      where: { id: session.id },
+      data: {
+        refreshTokenHash: hashToken(newRefresh),
+        lastUsedAt: new Date(),
+      },
+    });
+
+    const accessToken = signAccessToken({
+      userId: session.userId,
+      sessionId: session.id,
+    });
+
+    // Web
+    if (tokenFromCookie) {
+      res.cookie("refresh_token", newRefresh, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "lax",
+        path: "/v1/auth/refresh",
+      });
+
+      return res.json({
+        success: true,
+        data: {
+          accessToken,
+        },
+      });
+    }
+
+    // Mobile
+    return res.json({
+      success: true,
+      data: {
+        accessToken,
+        refreshToken: newRefresh,
       },
     });
   } catch (error) {

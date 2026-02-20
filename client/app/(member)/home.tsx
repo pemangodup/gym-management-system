@@ -1,4 +1,5 @@
 import { View, Text, StyleSheet } from "react-native";
+import { colors } from "../../src/shared/theme/colors";
 
 export default function home() {
   return (
@@ -11,7 +12,7 @@ export default function home() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "silver",
+    backgroundColor: colors.background,
     justifyContent: "center",
     alignItems: "center",
   },

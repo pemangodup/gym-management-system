@@ -7,9 +7,5 @@ export default function Index() {
     return <Redirect href="/welcome" />;
   }
 
-  // later: decide role
-  // return <Redirect href="/dashboard" />; // admin/owner
-  // return <Redirect href="/home" />;      // member
-
   return <Redirect href="/home" />;
 }

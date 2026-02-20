@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Text, View, StyleSheet, TextInput } from "react-native";
+import { Text, View, StyleSheet, Alert } from "react-native";
 import AppButton from "../../components/AppButton";
 import { router } from "expo-router";
 import AppInput from "../../components/AppInput";
@@ -10,8 +10,30 @@ export default function Register() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const onSubmit = () => {
-    console.log("Form Submitted");
+  const onSubmit = async () => {
+    console.log("I clicked Submit.");
+    try {
+      const response = await fetch(
+        "http://192.168.1.84:4000/gym-management-app/v1/auth/register",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            fullName,
+            email,
+            password,
+          }),
+        },
+      );
+      const data = await response.json();
+      if (response.ok) {
+        Alert.alert("Success", "Account Created");
+      } else {
+        Alert.alert("Failure", data.error);
+      }
+    } catch (error) {
+      console.log("This error:" + error);
+    }
   };
   return (
     <View style={styles.container}>

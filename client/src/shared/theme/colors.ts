@@ -3,7 +3,7 @@ export const colors = {
   primary: "#2E7D32",
 
   // Backgrounds
-  background: "#FFFFFF",
+  background: "#eff1ed",
 
   // Text
   title: "#1B5E20",
