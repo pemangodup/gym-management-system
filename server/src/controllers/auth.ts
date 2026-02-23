@@ -106,7 +106,7 @@ export const login = async (
         httpOnly: true,
         secure: process.env.NODE_ENV === "production", // true in production HTTPS
         sameSite: "lax",
-        path: "/v1/auth/refresh",
+        path: "/auth/refresh",
       });
       return res.status(200).json({
         success: true,
@@ -182,7 +182,7 @@ export const refreshToken = async (
         httpOnly: true,
         secure: true,
         sameSite: "lax",
-        path: "/v1/auth/refresh",
+        path: "auth/refresh",
       });
 
       return res.json({
