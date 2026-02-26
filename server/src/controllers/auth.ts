@@ -9,6 +9,10 @@ import {
 } from "../utils/token.js";
 import { prisma } from "../config/db.js";
 
+// @desc   Register User
+// @route  POST /gym-management-app/auth/register
+// @access Public
+
 type RegisterBody = {
   fullName: string;
   email: string;
@@ -16,10 +20,6 @@ type RegisterBody = {
   confirmPassword: string;
   role: "MEMBER" | "OWNER" | "ADMIN";
 };
-
-// @desc   Register User
-// @route  POST /gym-management-app/auth/register
-// @access Public
 
 export const register = async (
   req: Request<{}, {}, RegisterBody>,

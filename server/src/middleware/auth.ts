@@ -8,6 +8,7 @@ export const requireAuth = (
   next: NextFunction,
 ) => {
   const header = req.header("Authorization");
+  console.log(header);
 
   const token = header?.startsWith("Bearer ") ? header.slice(7) : null;
 
@@ -23,7 +24,7 @@ export const requireAuth = (
 
     (req as any).userId = payload.sub;
     (req as any).sessionId = payload.sid;
-
+    console.log(payload);
     next();
   } catch {
     return next(new ErrorResponse("Invalid or expired token", 401));
