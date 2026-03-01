@@ -9,8 +9,6 @@ export const requireAuth = (
   next: NextFunction,
 ) => {
   const header = req.header("Authorization");
-  console.log("Hehe");
-  console.log(header);
 
   const token = header?.startsWith("Bearer ") ? header.slice(7) : null;
 

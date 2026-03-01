@@ -8,9 +8,10 @@ import {
   changePassword,
 } from "../controllers/auth.js";
 import { requireAuth } from "../middleware/auth.js";
+import { validateEmailString } from "../middleware/validateEmailString.js";
 
-authRouter.post("/register", register);
-authRouter.post("/login", login);
+authRouter.post("/register", validateEmailString, register);
+authRouter.post("/login", validateEmailString, login);
 authRouter.post("/refresh", requireAuth, refreshToken);
 authRouter.post("/change-password", changePassword);
 
