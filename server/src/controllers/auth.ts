@@ -1,4 +1,5 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
+
 import { registerUser, loginUser } from "../services/auth.service.js";
 import { trimStrings } from "../utils/trimStrings.js";
 import { ErrorResponse } from "../utils/ErrorResponse.js";
@@ -204,4 +205,19 @@ export const refreshToken = async (
   } catch (error) {
     next(error);
   }
+};
+
+// @desc    Change Password
+// @route   POST /gym-management-app/v1/auth/change-password
+// @access  Private
+export const changePassword = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  console.log("Lets Change password.");
+  res.status(200).json({
+    success: true,
+    data: req.body,
+  });
 };
