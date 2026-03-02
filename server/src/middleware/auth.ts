@@ -2,9 +2,8 @@ import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { ErrorResponse } from "../utils/ErrorResponse.js";
 
-type reqBody = {};
 export const requireAuth = (
-  req: Request<{}, {}, reqBody>,
+  req: Request,
   _res: Response,
   next: NextFunction,
 ) => {
@@ -19,12 +18,11 @@ export const requireAuth = (
   try {
     const payload = jwt.verify(
       token,
-      process.env.ACCESS_TOKEN_SECRET as string,
+      process.env.ACCESS_TOKEN_SECRET as any,
     ) as any;
 
-    // req.userId = payload.sub;
-    // req.sessionId = payload.sid;
-    console.log(payload);
+    req.body.userId = payload.sub;
+    req.body.sessionId = payload.sid;
     next();
   } catch {
     return next(new ErrorResponse("Invalid or expired token", 401));

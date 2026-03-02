@@ -10,7 +10,7 @@ export function signAccessToken(payload: {
     process.env.ACCESS_TOKEN_SECRET as string,
     {
       subject: payload.userId,
-      expiresIn: "10m",
+      expiresIn: process.env.ACCESS_TOKEN_EXPIRY as any,
     },
   );
 }

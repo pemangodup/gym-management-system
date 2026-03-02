@@ -13,6 +13,6 @@ import { validateEmailString } from "../middleware/validateEmailString.js";
 authRouter.post("/register", validateEmailString, register);
 authRouter.post("/login", validateEmailString, login);
 authRouter.post("/refresh", requireAuth, refreshToken);
-authRouter.post("/change-password", changePassword);
+authRouter.post("/change-password", requireAuth, changePassword);
 
 export default authRouter;

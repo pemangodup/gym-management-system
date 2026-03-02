@@ -210,14 +210,19 @@ export const refreshToken = async (
 // @desc    Change Password
 // @route   POST /gym-management-app/v1/auth/change-password
 // @access  Private
-export const changePassword = (
+export const changePassword = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
-  console.log("Lets Change password.");
-  res.status(200).json({
+  const { email, oldPassword, newPassword, userId } = req.body;
+
+  const user = await prisma.user.findUnique({
+    where: { id: userId, email },
+  });
+  console.log(user);
+  return res.status(200).json({
     success: true,
-    data: req.body,
+    data: user,
   });
 };
