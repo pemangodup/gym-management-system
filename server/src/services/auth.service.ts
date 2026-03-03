@@ -62,6 +62,5 @@ export async function loginUser(user: LoginBody) {
     throw new ErrorResponse("Password does not match.", 401);
   }
 
-  console.log(result);
   return existingUser;
 }

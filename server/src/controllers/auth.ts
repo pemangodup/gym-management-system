@@ -9,6 +9,7 @@ import {
   signAccessToken,
 } from "../utils/token.js";
 import { prisma } from "../config/db.js";
+import { hashPassword, verifyHashPassword } from "../utils/password.js";
 
 // @desc   Register User
 // @route  POST /gym-management-app/auth/register
@@ -217,10 +218,34 @@ export const changePassword = async (
 ) => {
   const { email, oldPassword, newPassword, userId } = req.body;
 
-  const user = await prisma.user.findUnique({
+  let user = await prisma.user.findUnique({
     where: { id: userId, email },
   });
-  console.log(user);
+
+  const isMatch = await verifyHashPassword(oldPassword, user?.password as any);
+
+  if (!isMatch) {
+    return next(new ErrorResponse("Password does not match.", 401));
+  }
+
+  const hashedNewPassword = await hashPassword(newPassword);
+
+  // Verifying that new password is not equal to old one
+  const validatePasswordUniqueness = await verifyHashPassword(
+    newPassword,
+    user?.password as any,
+  );
+  if (validatePasswordUniqueness) {
+    return next(
+      new ErrorResponse("New password cannot be the same as old one. ", 400),
+    );
+  }
+
+  user = await prisma.user.update({
+    where: { id: user?.id },
+    data: { password: hashedNewPassword },
+  });
+
   return res.status(200).json({
     success: true,
     data: user,
