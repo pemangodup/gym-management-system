@@ -21,7 +21,7 @@ app.use(cookieParser());
 import authRouter from "./routes/auth.js";
 
 // Routing with the routes path
-app.use("/gym-management-app/v1/auth", authRouter);
+app.use("/gym-management-system/v1/auth", authRouter);
 
 // Custom Error Handler
 app.use(errorHandler);
