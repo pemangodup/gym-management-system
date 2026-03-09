@@ -12,7 +12,7 @@ import { prisma } from "../config/db.js";
 import { hashPassword, verifyHashPassword } from "../utils/password.js";
 
 // @desc   Register User
-// @route  POST /gym-management-app/auth/register
+// @route  POST /gym-management-system/v1/auth/register
 // @access Public
 
 type RegisterBody = {
@@ -52,7 +52,7 @@ export const register = async (
 };
 
 // @desc   Login User
-// @route  POST /gym-management-app/auth/login
+// @route  POST /gym-management-system/v1/auth/login
 // @access Private
 type LoginBody = {
   role: "ADMIN" | "MEMBER" | "OWNER";
@@ -134,7 +134,7 @@ export const login = async (
 };
 
 // @desc   Refresh Token
-// @route  POST /gym-management-app/auth/refresh
+// @route  POST /gym-management-system/v1/auth/refresh
 // @access Private
 
 type RefreshBody = { refreshToken?: string };
@@ -209,7 +209,7 @@ export const refreshToken = async (
 };
 
 // @desc    Change Password
-// @route   POST /gym-management-app/v1/auth/change-password
+// @route   POST /gym-management-system/v1/auth/change-password
 // @access  Private
 export const changePassword = async (
   req: Request,
@@ -249,5 +249,20 @@ export const changePassword = async (
   return res.status(200).json({
     success: true,
     data: user,
+  });
+};
+
+// @desc   Forgot Password
+// @route  POST /gym-management-system/v1/auth/change-password
+// @access Private
+
+export const forgotPassword = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  res.status(200).json({
+    success: true,
+    data: { email: req.body.email },
   });
 };
