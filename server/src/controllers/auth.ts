@@ -256,11 +256,14 @@ export const changePassword = async (
 // @route  POST /gym-management-system/v1/auth/change-password
 // @access Private
 
-export const forgotPassword = (
+export const forgotPassword = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
+  const { email } = req.body;
+  const user = await prisma.user.findUnique({ where: { email } });
+  console.log(user);
   res.status(200).json({
     success: true,
     data: { email: req.body.email },
