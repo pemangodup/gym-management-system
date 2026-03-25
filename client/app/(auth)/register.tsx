@@ -7,14 +7,16 @@ import AppInput from "../../components/AppInput";
 export default function Register() {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
+  const [role, setRole] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const onSubmit = async () => {
     console.log("I clicked Submit.");
+    console.log(fullName);
     try {
       const response = await fetch(
-        "http://192.168.1.84:4000/gym-management-app/v1/auth/register",
+        "http://192.168.1.84:4000/gym-management-system/v1/auth/register",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -22,12 +24,21 @@ export default function Register() {
             fullName,
             email,
             password,
+            role,
           }),
         },
       );
+
       const data = await response.json();
       if (response.ok) {
-        Alert.alert("Success", "Account Created");
+        Alert.alert("Success", "Account Created", [
+          {
+            text: "OK",
+            onPress: () => {
+              router.replace("/home");
+            },
+          },
+        ]);
       } else {
         Alert.alert("Failure", data.error);
       }
@@ -56,6 +67,14 @@ export default function Register() {
           autoCapitalize="none"
           returnKeyType="next"
           keyboardType="email-address"
+        />
+        <AppInput
+          label="Role"
+          value={role}
+          onChangeText={setRole}
+          placeholder="MEMBER"
+          returnKeyType="next"
+          autoCapitalize="characters"
         />
         <AppInput
           label="Password"
