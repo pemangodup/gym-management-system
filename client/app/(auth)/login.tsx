@@ -10,9 +10,22 @@ import { colors } from "../../src/shared/theme/colors";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("");
 
-  const onPress = () => {
-    console.log("I got clicked.");
+  const onPress = async () => {
+    const response = await fetch(
+      "http://192.168.1.84:4000/gym-management-system/v1/auth/login",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ role, email, password }),
+      },
+    );
+
+    const user = await response.json();
+    if (user.success === true) {
+      console.log("Vamos");
+    }
   };
   return (
     <View style={styles.container}>
@@ -36,6 +49,15 @@ export default function Login() {
           value={password}
           onChangeText={setPassword}
           placeholder="Enter Password"
+          autoCapitalize="none"
+          keyboardType="default"
+          returnKeyType="next"
+        />
+        <AppInput
+          label="Role"
+          value={role}
+          onChangeText={setRole}
+          placeholder="Enter Role"
           autoCapitalize="none"
           keyboardType="default"
           returnKeyType="done"
