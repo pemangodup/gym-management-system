@@ -33,10 +33,10 @@ export const register = async (
   // Using the trimString() utility function to trim the strings
   const trimmedStrings = trimStrings(data);
 
-  const { fullName, email, password, confirmPassword, role } = trimmedStrings;
+  const { fullName, email, password, role } = trimmedStrings;
 
-  if (!fullName || !email || !password || !confirmPassword || !role) {
-    return next(new ErrorResponse("Please provide both the credentials.", 400));
+  if (!fullName || !email || !password || !role) {
+    return next(new ErrorResponse("Please provide the credentials.", 400));
   }
   try {
     // Passing the parameter in the registerUser()
@@ -75,7 +75,7 @@ export const login = async (
 
   const { role, email, password } = trimedData;
   if (!role || !email || !password) {
-    return next(new ErrorResponse("Please provide both the credentials.", 400));
+    return next(new ErrorResponse("Please provide all the credentials.", 400));
   }
 
   try {
@@ -262,10 +262,14 @@ export const forgotPassword = async (
   next: NextFunction,
 ) => {
   const { email } = req.body;
+
   const user = await prisma.user.findUnique({ where: { email } });
-  console.log(user);
+  if (user) {
+    console.log("I am in.");
+  }
+
   res.status(200).json({
     success: true,
-    data: { email: req.body.email },
+    data: { message: "" },
   });
 };

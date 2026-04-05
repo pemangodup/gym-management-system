@@ -8,7 +8,6 @@ type RegisterBody = {
   email: string;
   password: string;
   role: "MEMBER" | "OWNER" | "ADMIN";
-  confirmPassword: string;
 };
 
 // REGISTER USER
@@ -52,8 +51,9 @@ type LoginBody = {
 };
 export async function loginUser(user: LoginBody) {
   const email = user.email.toLowerCase();
+  const role = user.role;
 
-  const existingUser = await prisma.user.findUnique({ where: { email } });
+  const existingUser = await prisma.user.findUnique({ where: { email, role } });
   if (!existingUser) {
     throw new ErrorResponse("User does not exist", 401);
   }
