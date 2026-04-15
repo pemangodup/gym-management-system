@@ -1,5 +1,5 @@
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 
 import AppInput from "../../components/AppInput";
@@ -11,6 +11,17 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
+
+  // const renderLabel = () => {
+  //   if (value || isFocus) {
+  //     return (
+  //       <Text style={[styles.label, isFocus && { color: "blue" }]}>
+  //         Dropdown label
+  //       </Text>
+  //     );
+  //   }
+  //   return null;
+  // };
 
   const onPress = async () => {
     const response = await fetch(
@@ -25,6 +36,7 @@ export default function Login() {
     const user = await response.json();
     if (user.success === true) {
       console.log("Vamos");
+      router.replace("/home");
     }
   };
   return (
@@ -52,15 +64,6 @@ export default function Login() {
           autoCapitalize="none"
           keyboardType="default"
           returnKeyType="next"
-        />
-        <AppInput
-          label="Role"
-          value={role}
-          onChangeText={setRole}
-          placeholder="Enter Role"
-          autoCapitalize="none"
-          keyboardType="default"
-          returnKeyType="done"
         />
       </View>
       <View>
@@ -145,5 +148,40 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     gap: 10,
+  },
+  // Drop down
+
+  dropdown: {
+    height: 50,
+    borderColor: "gray",
+    borderWidth: 0.5,
+    borderRadius: 8,
+    paddingHorizontal: 8,
+  },
+  icon: {
+    marginRight: 5,
+  },
+  label: {
+    position: "absolute",
+    backgroundColor: "white",
+    left: 22,
+    top: 8,
+    zIndex: 999,
+    paddingHorizontal: 8,
+    fontSize: 14,
+  },
+  placeholderStyle: {
+    fontSize: 16,
+  },
+  selectedTextStyle: {
+    fontSize: 16,
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
   },
 });
